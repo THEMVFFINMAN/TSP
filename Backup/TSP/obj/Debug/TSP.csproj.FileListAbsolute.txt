@@ -1,0 +1,4 @@
+C:\Users\JJ\Downloads\CS312-master (1)\CS312-master\TSPBranchAndBound\Backup\TSP\obj\Debug\TSP.csprojResolveAssemblyReference.cache
+C:\Users\JJ\Downloads\CS312-master (1)\CS312-master\TSPBranchAndBound\Backup\TSP\obj\Debug\TSP.mainform.resources
+C:\Users\JJ\Downloads\CS312-master (1)\CS312-master\TSPBranchAndBound\Backup\TSP\obj\Debug\TSP.Properties.Resources.resources
+C:\Users\JJ\Downloads\CS312-master (1)\CS312-master\TSPBranchAndBound\Backup\TSP\obj\Debug\TSP.csproj.GenerateResource.Cache
