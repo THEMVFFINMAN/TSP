@@ -1,0 +1,3 @@
+﻿30
+15 5 ALL Hard True
+30 5 ALL Hard True
