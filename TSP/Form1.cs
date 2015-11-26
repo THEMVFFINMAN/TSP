@@ -199,5 +199,11 @@ namespace TSP
                 AlgorithmMenu2.ShowDropDown();
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            TestSuiteSolver solver = new TestSuiteSolver();
+            solver.RunTestSuite();
+        }
     }
 }

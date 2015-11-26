@@ -13,7 +13,7 @@ namespace TSP
 
     class ProblemAndSolver
     {
-
+        public bool UpdateForm = true;
         private class TSPSolution
         {
             /// <summary>
@@ -617,6 +617,7 @@ namespace TSP
         ///  solve the problem.  This is the entry point for the solver when the run button is clicked
         /// right now it just picks a simple solution. 
         /// </summary>
+        [TestSuiteSolver.AlgorithmImplementation]
         public void solveProblem()
         {
             /** Initialize */
@@ -677,10 +678,13 @@ namespace TSP
                 if (priorityQueue.Count == 0)
                 {
                     timer.Stop();
-                    Program.MainForm.tbCostOfTour.Text = " " + bssf.costOfRoute() + "*";
-                    Program.MainForm.toolStripTextBox1.Text = " " + updates;
-                    Program.MainForm.tbElapsedTime.Text = " " + timer.Elapsed.TotalSeconds;
-                    Program.MainForm.Invalidate();
+                    if (UpdateForm)
+                    {
+                        Program.MainForm.tbCostOfTour.Text = " " + bssf.costOfRoute() + "*";
+                        Program.MainForm.toolStripTextBox1.Text = " " + updates;
+                        Program.MainForm.tbElapsedTime.Text = " " + timer.Elapsed.TotalSeconds;
+                        Program.MainForm.Invalidate();
+                    }
                     return;
                 }
                 if (priorityQueue.Count > stored)
@@ -696,10 +700,13 @@ namespace TSP
                 {
                     timer.Stop();
                     pruned += priorityQueue.Count + 1;
-                    Program.MainForm.tbCostOfTour.Text = " " + bssf.costOfRoute() + "*";
-                    Program.MainForm.Invalidate();
-                    Program.MainForm.toolStripTextBox1.Text = " " + updates;
-                    Program.MainForm.tbElapsedTime.Text = " " + timer.Elapsed.TotalSeconds;
+                    if (UpdateForm)
+                    {
+                        Program.MainForm.tbCostOfTour.Text = " " + bssf.costOfRoute() + "*";
+                        Program.MainForm.Invalidate();
+                        Program.MainForm.toolStripTextBox1.Text = " " + updates;
+                        Program.MainForm.tbElapsedTime.Text = " " + timer.Elapsed.TotalSeconds;
+                    }
                     return;
                 }
 
@@ -714,10 +721,13 @@ namespace TSP
                         {
                             timer.Stop();
                             pruned += priorityQueue.Count;
-                            Program.MainForm.tbCostOfTour.Text = " " + bssf.costOfRoute() + "*";
-                            Program.MainForm.Invalidate();
-                            Program.MainForm.toolStripTextBox1.Text = " " + updates;
-                            Program.MainForm.tbElapsedTime.Text = " " + timer.Elapsed.TotalSeconds;
+                            if (UpdateForm)
+                            {
+                                Program.MainForm.tbCostOfTour.Text = " " + bssf.costOfRoute() + "*";
+                                Program.MainForm.Invalidate();
+                                Program.MainForm.toolStripTextBox1.Text = " " + updates;
+                                Program.MainForm.tbElapsedTime.Text = " " + timer.Elapsed.TotalSeconds;
+                            }
                             return;
                         }
                     }
@@ -726,10 +736,13 @@ namespace TSP
                 if (timer.Elapsed.TotalSeconds >= 30)
                 {
                     timer.Stop();
-                    Program.MainForm.tbCostOfTour.Text = " " + bssf.costOfRoute();
-                    Program.MainForm.Invalidate();
-                    Program.MainForm.toolStripTextBox1.Text = " " + updates;
-                    Program.MainForm.tbElapsedTime.Text = " " + 30;
+                    if (UpdateForm)
+                    {
+                        Program.MainForm.tbCostOfTour.Text = " " + bssf.costOfRoute();
+                        Program.MainForm.Invalidate();
+                        Program.MainForm.toolStripTextBox1.Text = " " + updates;
+                        Program.MainForm.tbElapsedTime.Text = " " + 30;
+                    }
                     return;
                 }
 
@@ -785,6 +798,7 @@ namespace TSP
         /// <summary>
         /// solve the problem in the greediest way.
         /// </summary>
+        [TestSuiteSolver.AlgorithmImplementation]
         public void pickGreedySolution()
         {
             // first node will be the starting & ending point
@@ -829,22 +843,27 @@ namespace TSP
 
             // call this the Best Solution So Far. bssf is the route that will be drawn by the Draw method.
             bssf = new TSPSolution(Route);
-            // update the cost of the tour.
-            Program.MainForm.tbCostOfTour.Text = " " + bssf.costOfRoute();
-            // update count of tours found. (Greedy stops when it finds the first one)
-            if (bssf.costOfRoute() > 0)
-                Program.MainForm.toolStripTextBox1.Text = "" + 1;
-            else
-                Program.MainForm.toolStripTextBox1.Text = "" + 0;
-            //update time taken to find the tour.
-            Program.MainForm.tbElapsedTime.Text = "" + (timer.Elapsed.TotalMilliseconds / 1000);
-            // do a refresh.
-            Program.MainForm.Invalidate();
+
+            if (UpdateForm)
+            {
+                // update the cost of the tour.
+                Program.MainForm.tbCostOfTour.Text = " " + bssf.costOfRoute();
+                // update count of tours found. (Greedy stops when it finds the first one)
+                if (bssf.costOfRoute() > 0)
+                    Program.MainForm.toolStripTextBox1.Text = "" + 1;
+                else
+                    Program.MainForm.toolStripTextBox1.Text = "" + 0;
+                //update time taken to find the tour.
+                Program.MainForm.tbElapsedTime.Text = "" + (timer.Elapsed.TotalMilliseconds / 1000);
+                // do a refresh.
+                Program.MainForm.Invalidate();
+            }
         }
 
         /// <summary>
         /// solve the problem in the randomiest way.
         /// </summary>
+        [TestSuiteSolver.AlgorithmImplementation]
         public void pickRandomSolution()
         {
             // first node will be the starting & ending point
@@ -869,10 +888,14 @@ namespace TSP
             }
             // call this the Best Solution So Far. bssf is the route that will be drawn by the Draw method.
             bssf = new TSPSolution(Route);
-            // update the cost of the tour.
-            Program.MainForm.tbCostOfTour.Text = " " + bssf.costOfRoute();
-            // do a refresh.
-            Program.MainForm.Invalidate();
+
+            if (UpdateForm)
+            {
+                // update the cost of the tour.
+                Program.MainForm.tbCostOfTour.Text = " " + bssf.costOfRoute();
+                // do a refresh.
+                Program.MainForm.Invalidate();
+            }
         }
 
         public void initializeFarthestInsertion(ref List<int> subTour)
@@ -990,6 +1013,7 @@ namespace TSP
                 return;
         }
 
+        [TestSuiteSolver.AlgorithmImplementation]
         public void specialSolution()
         {
             Stopwatch timer = new Stopwatch();
@@ -1020,10 +1044,13 @@ namespace TSP
             //}
 
             timer.Stop();
-            Program.MainForm.tbCostOfTour.Text = " " + bssf.costOfRoute();
-            Program.MainForm.tbElapsedTime.Text = " " + timer.Elapsed.TotalSeconds;
-            Program.MainForm.toolStripTextBox1.Text = " " + updates;
-            Program.MainForm.Invalidate();
+            if (UpdateForm)
+            {
+                Program.MainForm.tbCostOfTour.Text = " " + bssf.costOfRoute();
+                Program.MainForm.tbElapsedTime.Text = " " + timer.Elapsed.TotalSeconds;
+                Program.MainForm.toolStripTextBox1.Text = " " + updates;
+                Program.MainForm.Invalidate();
+            }
         }
         #endregion
     }
