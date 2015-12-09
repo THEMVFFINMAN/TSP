@@ -50,151 +50,190 @@
             // maxTimeLabel
             // 
             this.maxTimeLabel.AutoSize = true;
-            this.maxTimeLabel.Location = new System.Drawing.Point(13, 13);
+            this.maxTimeLabel.Location = new System.Drawing.Point(9, 11);
+            this.maxTimeLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.maxTimeLabel.Name = "maxTimeLabel";
-            this.maxTimeLabel.Size = new System.Drawing.Size(68, 17);
+            this.maxTimeLabel.Size = new System.Drawing.Size(53, 13);
             this.maxTimeLabel.TabIndex = 0;
             this.maxTimeLabel.Text = "Max Time";
             // 
             // maxTimeBox
             // 
-            this.maxTimeBox.Location = new System.Drawing.Point(88, 13);
+            this.maxTimeBox.Location = new System.Drawing.Point(66, 7);
+            this.maxTimeBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.maxTimeBox.Name = "maxTimeBox";
             this.maxTimeBox.ReadOnly = true;
-            this.maxTimeBox.Size = new System.Drawing.Size(86, 22);
+            this.maxTimeBox.Size = new System.Drawing.Size(66, 20);
             this.maxTimeBox.TabIndex = 1;
             // 
             // currentTestLabel
             // 
             this.currentTestLabel.AutoSize = true;
-            this.currentTestLabel.Location = new System.Drawing.Point(13, 43);
+            this.currentTestLabel.Location = new System.Drawing.Point(9, 36);
+            this.currentTestLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.currentTestLabel.Name = "currentTestLabel";
-            this.currentTestLabel.Size = new System.Drawing.Size(87, 17);
+            this.currentTestLabel.Size = new System.Drawing.Size(65, 13);
             this.currentTestLabel.TabIndex = 2;
             this.currentTestLabel.Text = "Current Test";
             // 
             // currentTestBox
             // 
-            this.currentTestBox.Location = new System.Drawing.Point(107, 43);
+            this.currentTestBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.currentTestBox.Location = new System.Drawing.Point(80, 32);
+            this.currentTestBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.currentTestBox.Name = "currentTestBox";
             this.currentTestBox.ReadOnly = true;
-            this.currentTestBox.Size = new System.Drawing.Size(438, 22);
+            this.currentTestBox.Size = new System.Drawing.Size(502, 20);
             this.currentTestBox.TabIndex = 3;
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(15, 234);
+            this.label1.Location = new System.Drawing.Point(18, 329);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(97, 17);
+            this.label1.Size = new System.Drawing.Size(72, 13);
             this.label1.TabIndex = 4;
             this.label1.Text = "Test Progress";
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(126, 234);
+            this.label2.Location = new System.Drawing.Point(111, 329);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(123, 17);
+            this.label2.Size = new System.Drawing.Size(92, 13);
             this.label2.TabIndex = 5;
             this.label2.Text = "Function Progress";
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(256, 234);
+            this.label3.Location = new System.Drawing.Point(216, 329);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(120, 17);
+            this.label3.Size = new System.Drawing.Size(89, 13);
             this.label3.TabIndex = 6;
             this.label3.Text = "Iteration Progress";
             // 
             // testProgressBox
             // 
-            this.testProgressBox.Location = new System.Drawing.Point(18, 254);
+            this.testProgressBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.testProgressBox.Location = new System.Drawing.Point(9, 347);
+            this.testProgressBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.testProgressBox.Name = "testProgressBox";
             this.testProgressBox.ReadOnly = true;
-            this.testProgressBox.Size = new System.Drawing.Size(94, 22);
+            this.testProgressBox.Size = new System.Drawing.Size(91, 20);
             this.testProgressBox.TabIndex = 7;
             // 
             // functionProgressBox
             // 
-            this.functionProgressBox.Location = new System.Drawing.Point(129, 254);
+            this.functionProgressBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.functionProgressBox.Location = new System.Drawing.Point(112, 347);
+            this.functionProgressBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.functionProgressBox.Name = "functionProgressBox";
             this.functionProgressBox.ReadOnly = true;
-            this.functionProgressBox.Size = new System.Drawing.Size(120, 22);
+            this.functionProgressBox.Size = new System.Drawing.Size(91, 20);
             this.functionProgressBox.TabIndex = 8;
             // 
             // iterationProgressBox
             // 
-            this.iterationProgressBox.Location = new System.Drawing.Point(259, 254);
+            this.iterationProgressBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.iterationProgressBox.Location = new System.Drawing.Point(215, 347);
+            this.iterationProgressBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.iterationProgressBox.Name = "iterationProgressBox";
             this.iterationProgressBox.ReadOnly = true;
-            this.iterationProgressBox.Size = new System.Drawing.Size(117, 22);
+            this.iterationProgressBox.Size = new System.Drawing.Size(91, 20);
             this.iterationProgressBox.TabIndex = 9;
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(383, 234);
+            this.label4.Location = new System.Drawing.Point(326, 329);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(101, 17);
+            this.label4.Size = new System.Drawing.Size(75, 13);
             this.label4.TabIndex = 10;
             this.label4.Text = "Total Progress";
             // 
             // totalProgressBox
             // 
-            this.totalProgressBox.Location = new System.Drawing.Point(386, 254);
+            this.totalProgressBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.totalProgressBox.Location = new System.Drawing.Point(318, 347);
+            this.totalProgressBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.totalProgressBox.Name = "totalProgressBox";
             this.totalProgressBox.ReadOnly = true;
-            this.totalProgressBox.Size = new System.Drawing.Size(98, 22);
+            this.totalProgressBox.Size = new System.Drawing.Size(91, 20);
             this.totalProgressBox.TabIndex = 11;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(13, 77);
+            this.label5.Location = new System.Drawing.Point(9, 61);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(113, 17);
+            this.label5.Size = new System.Drawing.Size(85, 13);
             this.label5.TabIndex = 12;
             this.label5.Text = "Current Function";
             // 
             // currentFunctionBox
             // 
-            this.currentFunctionBox.Location = new System.Drawing.Point(132, 74);
+            this.currentFunctionBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.currentFunctionBox.Location = new System.Drawing.Point(99, 57);
+            this.currentFunctionBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.currentFunctionBox.Name = "currentFunctionBox";
             this.currentFunctionBox.ReadOnly = true;
-            this.currentFunctionBox.Size = new System.Drawing.Size(413, 22);
+            this.currentFunctionBox.Size = new System.Drawing.Size(483, 20);
             this.currentFunctionBox.TabIndex = 13;
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(12, 283);
+            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar1.Location = new System.Drawing.Point(9, 372);
+            this.progressBar1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(532, 23);
+            this.progressBar1.Size = new System.Drawing.Size(573, 19);
             this.progressBar1.TabIndex = 14;
             // 
             // timeLabel
             // 
+            this.timeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.timeLabel.AutoSize = true;
-            this.timeLabel.Location = new System.Drawing.Point(499, 9);
+            this.timeLabel.Location = new System.Drawing.Point(569, 7);
+            this.timeLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.timeLabel.Name = "timeLabel";
-            this.timeLabel.Size = new System.Drawing.Size(16, 17);
+            this.timeLabel.Size = new System.Drawing.Size(13, 13);
             this.timeLabel.TabIndex = 15;
             this.timeLabel.Text = "0";
             // 
             // reportBox
             // 
-            this.reportBox.Location = new System.Drawing.Point(16, 112);
+            this.reportBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.reportBox.Location = new System.Drawing.Point(9, 82);
+            this.reportBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.reportBox.Multiline = true;
             this.reportBox.Name = "reportBox";
-            this.reportBox.Size = new System.Drawing.Size(528, 119);
+            this.reportBox.Size = new System.Drawing.Size(573, 242);
             this.reportBox.TabIndex = 16;
             // 
             // TestSuiteProgress
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(557, 318);
+            this.ClientSize = new System.Drawing.Size(591, 403);
             this.Controls.Add(this.reportBox);
             this.Controls.Add(this.timeLabel);
             this.Controls.Add(this.progressBar1);
@@ -212,6 +251,7 @@
             this.Controls.Add(this.currentTestLabel);
             this.Controls.Add(this.maxTimeBox);
             this.Controls.Add(this.maxTimeLabel);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "TestSuiteProgress";
             this.Text = "TestSuiteProgress";
             this.ResumeLayout(false);
