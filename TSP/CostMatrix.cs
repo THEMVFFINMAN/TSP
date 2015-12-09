@@ -12,6 +12,7 @@ namespace TSP
         public double MaxNonInfiniteDistance { get; private set; }
         public double MinDistance { get; private set; }
         public double DistanceRange { get; private set; }
+        public List<int> AllEdgesSortedByDistance { get; private set; }
 
         private double[][] _innerMatrix;
         private double[][] _innerWorstDistance;
@@ -21,7 +22,7 @@ namespace TSP
         {
             Size = Cities.Length;
             _innerMatrix = new double[Size][];
-
+            AllEdgesSortedByDistance = new List<int>();
             MaxNonInfiniteDistance = double.MinValue;
             MinDistance = double.MaxValue;
             for (int i = 0; i < Size; i++)
@@ -40,9 +41,13 @@ namespace TSP
                         }
 
                     }
+                    AllEdgesSortedByDistance.Add(i * Size + j);
                     _innerMatrix[i][j] = val;
                 }
             }
+
+            AllEdgesSortedByDistance.Sort((a, b) =>
+                CostAtEdgeId(a).CompareTo(CostAtEdgeId(b)));
 
             DistanceRange = MaxNonInfiniteDistance - MinDistance;
 

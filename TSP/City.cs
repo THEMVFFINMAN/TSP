@@ -10,7 +10,7 @@ namespace TSP
     /// Represents a city, which is a node in the Traveling Salesman Problem
     /// </summary>
     [Serializable]
-    class City
+    public class City
     {
 
         public City(double x, double y)
