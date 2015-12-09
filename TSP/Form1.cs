@@ -179,7 +179,8 @@ namespace TSP
         private void yourTSPToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             this.reset();
-            CityData.specialSolution();
+            //CityData.specialSolution();
+            CityData.PointClusterSolution();
         }
 
         private void AlgorithmMenu2_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
