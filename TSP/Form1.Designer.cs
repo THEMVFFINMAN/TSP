@@ -73,22 +73,22 @@ namespace TSP
             this.toolStripSeparator4,
             this.toolStripLabel4,
             this.tbElapsedTime});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 725);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 587);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(845, 28);
+            this.toolStrip1.Size = new System.Drawing.Size(634, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
             // toolStripLabel2
             // 
             this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Size = new System.Drawing.Size(96, 25);
+            this.toolStripLabel2.Size = new System.Drawing.Size(75, 22);
             this.toolStripLabel2.Text = "Problem Size";
             // 
             // tbProblemSize
             // 
             this.tbProblemSize.Name = "tbProblemSize";
-            this.tbProblemSize.Size = new System.Drawing.Size(65, 28);
+            this.tbProblemSize.Size = new System.Drawing.Size(50, 25);
             this.tbProblemSize.Text = "20";
             this.tbProblemSize.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbProblemSize.Leave += new System.EventHandler(this.tbProblemSize_Leave);
@@ -97,7 +97,7 @@ namespace TSP
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 28);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
             // 
             // cboMode
             // 
@@ -106,45 +106,45 @@ namespace TSP
             "Normal",
             "Hard"});
             this.cboMode.Name = "cboMode";
-            this.cboMode.Size = new System.Drawing.Size(99, 28);
+            this.cboMode.Size = new System.Drawing.Size(75, 25);
             this.cboMode.Text = "Hard";
             this.cboMode.SelectedIndexChanged += new System.EventHandler(this.cboMode_SelectedIndexChanged);
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 28);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripLabel3
             // 
             this.toolStripLabel3.Name = "toolStripLabel3";
-            this.toolStripLabel3.Size = new System.Drawing.Size(87, 25);
+            this.toolStripLabel3.Size = new System.Drawing.Size(70, 22);
             this.toolStripLabel3.Text = "Cost of tour";
             // 
             // tbCostOfTour
             // 
             this.tbCostOfTour.Enabled = false;
             this.tbCostOfTour.Name = "tbCostOfTour";
-            this.tbCostOfTour.Size = new System.Drawing.Size(132, 28);
+            this.tbCostOfTour.Size = new System.Drawing.Size(100, 25);
             this.tbCostOfTour.Text = "--";
             this.tbCostOfTour.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 28);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripLabel4
             // 
             this.toolStripLabel4.Name = "toolStripLabel4";
-            this.toolStripLabel4.Size = new System.Drawing.Size(74, 25);
+            this.toolStripLabel4.Size = new System.Drawing.Size(58, 22);
             this.toolStripLabel4.Text = "Solved in ";
             // 
             // tbElapsedTime
             // 
             this.tbElapsedTime.Enabled = false;
             this.tbElapsedTime.Name = "tbElapsedTime";
-            this.tbElapsedTime.Size = new System.Drawing.Size(132, 28);
+            this.tbElapsedTime.Size = new System.Drawing.Size(100, 25);
             this.tbElapsedTime.Text = "--";
             this.tbElapsedTime.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -160,9 +160,9 @@ namespace TSP
             this.toolStripSeparator1,
             this.toolStripLabel5,
             this.toolStripTextBox1});
-            this.toolStrip2.Location = new System.Drawing.Point(0, 698);
+            this.toolStrip2.Location = new System.Drawing.Point(0, 562);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(845, 27);
+            this.toolStrip2.Size = new System.Drawing.Size(634, 25);
             this.toolStrip2.TabIndex = 1;
             this.toolStrip2.Text = "toolStrip2";
             // 
@@ -178,7 +178,7 @@ namespace TSP
             this.AlgorithmMenu2.Image = ((System.Drawing.Image)(resources.GetObject("AlgorithmMenu2.Image")));
             this.AlgorithmMenu2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.AlgorithmMenu2.Name = "AlgorithmMenu2";
-            this.AlgorithmMenu2.Size = new System.Drawing.Size(92, 24);
+            this.AlgorithmMenu2.Size = new System.Drawing.Size(77, 22);
             this.AlgorithmMenu2.Text = "Algorithm";
             this.AlgorithmMenu2.ButtonClick += new System.EventHandler(this.AlgorithmMenu2_ButtonClick_1);
             this.AlgorithmMenu2.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.AlgorithmMenu2_DropDownItemClicked);
@@ -186,35 +186,35 @@ namespace TSP
             // dToolStripMenuItem
             // 
             this.dToolStripMenuItem.Name = "dToolStripMenuItem";
-            this.dToolStripMenuItem.Size = new System.Drawing.Size(136, 24);
+            this.dToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
             this.dToolStripMenuItem.Text = "Default";
             this.dToolStripMenuItem.Click += new System.EventHandler(this.dToolStripMenuItem_Click);
             // 
             // yourTSPToolStripMenuItem1
             // 
             this.yourTSPToolStripMenuItem1.Name = "yourTSPToolStripMenuItem1";
-            this.yourTSPToolStripMenuItem1.Size = new System.Drawing.Size(136, 24);
+            this.yourTSPToolStripMenuItem1.Size = new System.Drawing.Size(121, 22);
             this.yourTSPToolStripMenuItem1.Text = "Your TSP";
             this.yourTSPToolStripMenuItem1.Click += new System.EventHandler(this.yourTSPToolStripMenuItem1_Click);
             // 
             // randomToolStripMenuItem1
             // 
             this.randomToolStripMenuItem1.Name = "randomToolStripMenuItem1";
-            this.randomToolStripMenuItem1.Size = new System.Drawing.Size(136, 24);
+            this.randomToolStripMenuItem1.Size = new System.Drawing.Size(121, 22);
             this.randomToolStripMenuItem1.Text = "Random";
             this.randomToolStripMenuItem1.Click += new System.EventHandler(this.randomToolStripMenuItem1_Click);
             // 
             // bBToolStripMenuItem
             // 
             this.bBToolStripMenuItem.Name = "bBToolStripMenuItem";
-            this.bBToolStripMenuItem.Size = new System.Drawing.Size(136, 24);
+            this.bBToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
             this.bBToolStripMenuItem.Text = "B and B";
             this.bBToolStripMenuItem.Click += new System.EventHandler(this.bBToolStripMenuItem_Click);
             // 
             // greedyToolStripMenuItem
             // 
             this.greedyToolStripMenuItem.Name = "greedyToolStripMenuItem";
-            this.greedyToolStripMenuItem.Size = new System.Drawing.Size(136, 24);
+            this.greedyToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
             this.greedyToolStripMenuItem.Text = "Greedy";
             this.greedyToolStripMenuItem.Click += new System.EventHandler(this.greedyToolStripMenuItem_Click);
             // 
@@ -224,20 +224,20 @@ namespace TSP
             this.newProblem.Image = ((System.Drawing.Image)(resources.GetObject("newProblem.Image")));
             this.newProblem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newProblem.Name = "newProblem";
-            this.newProblem.Size = new System.Drawing.Size(103, 24);
+            this.newProblem.Size = new System.Drawing.Size(83, 22);
             this.newProblem.Text = "New Problem";
             this.newProblem.Click += new System.EventHandler(this.newProblem_Click);
             // 
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(42, 24);
+            this.toolStripLabel1.Size = new System.Drawing.Size(32, 22);
             this.toolStripLabel1.Text = "Seed";
             // 
             // tbSeed
             // 
             this.tbSeed.Name = "tbSeed";
-            this.tbSeed.Size = new System.Drawing.Size(132, 27);
+            this.tbSeed.Size = new System.Drawing.Size(100, 25);
             // 
             // randomProblem
             // 
@@ -245,33 +245,34 @@ namespace TSP
             this.randomProblem.Image = ((System.Drawing.Image)(resources.GetObject("randomProblem.Image")));
             this.randomProblem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.randomProblem.Name = "randomProblem";
-            this.randomProblem.Size = new System.Drawing.Size(129, 24);
+            this.randomProblem.Size = new System.Drawing.Size(104, 22);
             this.randomProblem.Text = "Random Problem";
             this.randomProblem.Click += new System.EventHandler(this.randomProblem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 27);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripLabel5
             // 
             this.toolStripLabel5.Name = "toolStripLabel5";
-            this.toolStripLabel5.Size = new System.Drawing.Size(77, 24);
+            this.toolStripLabel5.Size = new System.Drawing.Size(61, 22);
             this.toolStripLabel5.Text = "Solution #";
             // 
             // toolStripTextBox1
             // 
             this.toolStripTextBox1.Enabled = false;
             this.toolStripTextBox1.Name = "toolStripTextBox1";
-            this.toolStripTextBox1.Size = new System.Drawing.Size(19, 27);
+            this.toolStripTextBox1.Size = new System.Drawing.Size(15, 25);
             this.toolStripTextBox1.Text = "--";
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(758, 725);
+            this.button1.Location = new System.Drawing.Point(567, 566);
+            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(56, 19);
             this.button1.TabIndex = 2;
             this.button1.Text = "TestSuite";
             this.button1.UseVisualStyleBackColor = true;
@@ -279,13 +280,12 @@ namespace TSP
             // 
             // mainform
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(845, 753);
+            this.ClientSize = new System.Drawing.Size(634, 612);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.toolStrip2);
             this.Controls.Add(this.toolStrip1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "mainform";
             this.Text = "Traveling Sales Person";
             this.Load += new System.EventHandler(this.Form1_Load);
