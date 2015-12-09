@@ -788,7 +788,7 @@ namespace TSP
 
         private List<List<CityNodeData>> _storedClusters;
         private List<CityNodeData> _cityNodes;
-        public float _clusterPercent = 0.1f;
+        public static float _clusterPercent = 0.1f;
         private float _threshold;
         private List<int> _interNodeEdges;
         private CostMatrix _costMatrix;

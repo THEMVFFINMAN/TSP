@@ -201,10 +201,18 @@ namespace TSP
             }
         }
 
+        TestSuiteSolver solver = new TestSuiteSolver();
+
         private void button1_Click(object sender, EventArgs e)
         {
-            TestSuiteSolver solver = new TestSuiteSolver();
             solver.RunTestSuite();
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            float result;
+            float.TryParse(((TextBox)sender).Text, out result);
+            ProblemAndSolver._clusterPercent = result;
         }
     }
 }
