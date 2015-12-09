@@ -616,27 +616,26 @@ namespace TSP
         [TestSuiteSolver.AlgorithmImplementation]
         public void PointClusterSolution()
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             CostMatrix costMatrix = new CostMatrix(Cities);
+            _costMatrix = costMatrix;
+            Stopwatch clusterWatch = new Stopwatch();
+            clusterWatch.Start();
             List<CityNodeData> CityData = new List<CityNodeData>();
+            _cityNodes = CityData;
             for (int i = 0; i < costMatrix.Size; i++)
             {
                 CityData.Add(new CityNodeData(i, costMatrix, Cities));
             }
 
             //Clustering
-            double clusterPercent = 0.1;
-            double threshold = costMatrix.DistanceRange * clusterPercent;
+            double threshold = costMatrix.DistanceRange * _clusterPercent;
             _threshold = (float)threshold;
             List<CityNodeData> citiesSortedByNumberUnderThreshold = new List<CityNodeData>(CityData);
             citiesSortedByNumberUnderThreshold.Sort((a, b) =>
                 (a.AverageWorstDistanceOfBelowThreshold(threshold).CompareTo(
                 b.AverageWorstDistanceOfBelowThreshold(threshold))));
-
-            foreach (CityNodeData c in citiesSortedByNumberUnderThreshold)
-            {
-                Console.WriteLine(c.AverageWorstDistanceOfBelowThreshold(threshold) + " " +
-                    c.NumberCitiesBelowWorstThreshold(threshold));
-            }
 
             List<List<CityNodeData>> finalClusters = new List<List<CityNodeData>>();
             List<CityNodeData> visited = new List<CityNodeData>(CityData);
@@ -684,25 +683,115 @@ namespace TSP
 
                 finalClusters.Add(curCluster);
             }
-
-            foreach (List<CityNodeData> cluster in finalClusters)
-            {
-                Console.WriteLine(cluster.Count);
-            }
+            clusterWatch.Stop();
             Console.WriteLine("SAVED: " + (costMatrix.Size - finalClusters.Count));
             _storedClusters = finalClusters;
 
             List<CityCluster> actualClusters = new List<CityCluster>();
+            Dictionary<int, CityCluster> cityToClusterItsIn = new Dictionary<int, CityCluster>();
             foreach (List<CityNodeData> clust in finalClusters)
             {
-                actualClusters.Add(new CityCluster(clust, CityData, costMatrix));
+                CityCluster actualCluster = new CityCluster(clust, CityData, costMatrix);
+                actualClusters.Add(actualCluster);
+                foreach (int city in actualCluster.ContainedCityIds)
+                {
+                    cityToClusterItsIn.Add(city, actualCluster);
+                }
             }
 
-            Program.MainForm.Invalidate();
+            
+            int startingEdge = -1;
+            foreach (int i in costMatrix.AllEdgesSortedByDistance)
+            {
+                KeyValuePair<int, int> coords = costMatrix.EdgeCoords(i);
+                if (!cityToClusterItsIn[coords.Key].Equals(cityToClusterItsIn[coords.Value]))
+                {
+                    startingEdge = i;
+                    break;
+                }
+            }
+            KeyValuePair<int, int> curCoords = costMatrix.EdgeCoords(startingEdge);
+            CityCluster curFromCluster = cityToClusterItsIn[curCoords.Key];
+            List<int> visitedCities = new List<int>();
+            List<CityCluster> clustersVisitedInOrder = new List<CityCluster>();
+            List<int> interNodeEdges = new List<int>();
+
+            clustersVisitedInOrder.Add(cityToClusterItsIn[curCoords.Key]);
+            visitedCities.AddRange(cityToClusterItsIn[curCoords.Key].ContainedCityIds);
+            cityToClusterItsIn[curCoords.Value].IncomingFromEdge(startingEdge);
+            cityToClusterItsIn[curCoords.Key].OutgoingOnEdge(startingEdge);
+            interNodeEdges.Add(startingEdge);
+
+            while (interNodeEdges.Count < actualClusters.Count - 1)
+            {
+                curFromCluster = cityToClusterItsIn[curCoords.Value];
+                int newEdgeId = curFromCluster.GetShortestValidOutgoingEdgeIgnoringCities(visitedCities);
+                
+                curCoords = costMatrix.EdgeCoords(newEdgeId);
+                cityToClusterItsIn[curCoords.Value].IncomingFromEdge(newEdgeId);
+                cityToClusterItsIn[curCoords.Value].OutgoingOnEdge(newEdgeId);
+
+                clustersVisitedInOrder.Add(curFromCluster);
+                visitedCities.AddRange(curFromCluster.ContainedCityIds);
+                interNodeEdges.Add(newEdgeId);
+            }
+
+            CityCluster end = cityToClusterItsIn[curCoords.Value];
+            CityCluster start = clustersVisitedInOrder[0];
+            int lastEdge = CityCluster.ShortedValidEdgeBetweenClusters(end, start);
+            interNodeEdges.Add(lastEdge);
+
+            List<int> allEdges = new List<int>();
+            ArrayList sol = new ArrayList();
+
+            foreach (int edge in interNodeEdges)
+            {
+                KeyValuePair<int, int> coords = costMatrix.EdgeCoords(edge);
+                CityCluster target = cityToClusterItsIn[coords.Value];
+                allEdges.Add(edge);
+                List<int> edgesSolved = target.GreedySolveEdges();
+                if (edgesSolved.Count == 0)
+                {
+                    sol.Add(Cities[target.ContainedCityIds[0]]);
+                }
+                else
+                {
+                    for (int i = 0; i < edgesSolved.Count; i++)
+                    {
+                        int curEdge = edgesSolved[i];
+                        KeyValuePair<int, int> innerCoords = costMatrix.EdgeCoords(curEdge);
+                        if (i == 0)
+                        {
+                            sol.Add(Cities[innerCoords.Key]);
+                        }
+                        sol.Add(Cities[innerCoords.Value]);
+
+                        allEdges.Add(curEdge);
+                    }
+                }
+
+            }
+
+            bssf = new TSPSolution(sol);
+            sw.Stop();
+            _interNodeEdges = interNodeEdges;
+            _interNodeEdges = null;
+
+            if (UpdateForm)
+            {
+                Program.MainForm.tbCostOfTour.Text = bssf.costOfRoute() + "";
+                Program.MainForm.tbElapsedTime.Text = sw.Elapsed.TotalSeconds + "";
+                Program.MainForm.Invalidate();
+            }
+            
         }
 
         private List<List<CityNodeData>> _storedClusters;
+        private List<CityNodeData> _cityNodes;
+        public float _clusterPercent = 0.1f;
         private float _threshold;
+        private List<int> _interNodeEdges;
+        private CostMatrix _costMatrix;
         public void CustomDraw(Graphics g)
         {
             if (_storedClusters == null)
@@ -710,18 +799,19 @@ namespace TSP
                 return;
             }
 
+            float width = g.VisibleClipBounds.Width - 45F;
+                float height = g.VisibleClipBounds.Height - 45F;
+
             Color[] clusterColors = new Color[]{Color.Red, Color.Blue, Color.Green, Color.Yellow, Color.Teal, Color.HotPink,
                 Color.Fuchsia, Color.Salmon, Color.Tomato, Color.Violet, Color.CadetBlue, Color.DarkOliveGreen, Color.Orange, 
-                Color.OrangeRed, Color.Black, Color.Black, Color.Black, Color.Black, Color.Black, Color.Black, Color.Black, 
-                Color.Black, Color.Black, Color.Black, Color.Black, Color.Black, Color.Black};
+                Color.OrangeRed, Color.Black };
             for (int i = 0; i < _storedClusters.Count; i++)
             {
                 List<CityNodeData> curCluster = _storedClusters[i];
                 Color col = clusterColors[i % clusterColors.Length];
 
                 Pen p = new Pen(col);
-                float width = g.VisibleClipBounds.Width - 45F;
-                float height = g.VisibleClipBounds.Height - 45F;
+                
                 for (int j = 0; j < curCluster.Count; j++)
                 {
                     CityNodeData c = curCluster[j];
@@ -729,8 +819,8 @@ namespace TSP
                     {
                         g.FillEllipse(p.Brush, (float)c.BaseCity.X * width - CITY_ICON_SIZE, (float)c.BaseCity.Y * height - CITY_ICON_SIZE,
                             CITY_ICON_SIZE * 2, CITY_ICON_SIZE * 2);
-                        g.DrawEllipse(p, (float)c.BaseCity.X * width - CITY_ICON_SIZE - _threshold, (float)c.BaseCity.Y * height - CITY_ICON_SIZE - _threshold,
-                            CITY_ICON_SIZE * 2 + 2 * _threshold, CITY_ICON_SIZE * 2 + 2 * _threshold);
+                        //g.DrawEllipse(p, (float)c.BaseCity.X * width - CITY_ICON_SIZE - _threshold, (float)c.BaseCity.Y * height - CITY_ICON_SIZE - _threshold,
+                         //   CITY_ICON_SIZE * 2 + 2 * _threshold, CITY_ICON_SIZE * 2 + 2 * _threshold);
                     }
                     else
                     {
@@ -742,7 +832,20 @@ namespace TSP
                 }
             }
 
-
+            if (_interNodeEdges != null)
+            {
+                List<Point> ps = new List<Point>();
+                foreach (int edgeId in _interNodeEdges)
+                {
+                    KeyValuePair<int, int> coords = _costMatrix.EdgeCoords(edgeId);
+                    
+                    Point a = new Point((int)(Cities[coords.Key].X * width) + CITY_ICON_SIZE / 2,
+                        (int)(Cities[coords.Key].Y * height) + CITY_ICON_SIZE / 2);
+                    Point b = new Point((int)(Cities[coords.Value].X * width) + CITY_ICON_SIZE / 2,
+                        (int)(Cities[coords.Value].Y * height) + CITY_ICON_SIZE / 2);
+                    g.DrawLine(routePenStyle, a, b);
+                }
+            }
         }
 
         /// <summary>

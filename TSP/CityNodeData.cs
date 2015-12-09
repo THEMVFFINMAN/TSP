@@ -17,6 +17,7 @@ namespace TSP
 
         public List<CityDistancePair> SortedBestDistance { get; private set; }
         public List<CityDistancePair> SortedWorstDistance { get; private set; }
+        public List<CityDistancePair> SortedOutgoingDistance { get; private set; }
 
         public double MeanWorstDistance { get; private set; }
         public double MeanBestDistance { get; private set; }
@@ -37,6 +38,7 @@ namespace TSP
 
             SortedBestDistance = new List<CityDistancePair>();
             SortedWorstDistance = new List<CityDistancePair>();
+            SortedOutgoingDistance = new List<CityDistancePair>();
 
             MeanWorstDistance = 0;
             MeanBestDistance = 0;
@@ -53,6 +55,7 @@ namespace TSP
                 {
                     double WorstDistance = CostMatrix.WorstDistanceBetween(CityId, j);
                     double BestDistance = CostMatrix.BestDistanceBetween(CityId, j);
+                    double Distance = CostMatrix.DistanceTo(CityId, j);
 
                     if (WorstDistance != double.PositiveInfinity)
                     {
@@ -73,7 +76,7 @@ namespace TSP
                         BestProximityScore += (CostMatrix.DistanceRange - BestDistance);
                         bestCount++;
                     }
-
+                    SortedOutgoingDistance.Add(new CityDistancePair(j, Distance));
                 }
             }
 
@@ -110,10 +113,10 @@ namespace TSP
             SDBestDistance /= (bestCount);
             SDWorstDistance = Math.Sqrt(SDWorstDistance);
             SDBestDistance = Math.Sqrt(SDBestDistance);
-            Console.WriteLine("STANDARD DEV: " + SDWorstDistance + " ");
+
             SortedBestDistance.Sort();
             SortedWorstDistance.Sort();
-
+            SortedOutgoingDistance.Sort();
 
         }
 
