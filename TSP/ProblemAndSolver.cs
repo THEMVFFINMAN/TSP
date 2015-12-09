@@ -269,7 +269,7 @@ namespace TSP
             {
                 g.FillEllipse(cityBrushStyle, (float)c.X * width, (float)c.Y * height, CITY_ICON_SIZE, CITY_ICON_SIZE);
             }
-
+            CustomDraw(g);
         }
 
         /// <summary>
@@ -611,6 +611,138 @@ namespace TSP
 
                 return (partialRoute)formatter.Deserialize(ms);
             }
+        }
+        
+        [TestSuiteSolver.AlgorithmImplementation]
+        public void PointClusterSolution()
+        {
+            CostMatrix costMatrix = new CostMatrix(Cities);
+            List<CityNodeData> CityData = new List<CityNodeData>();
+            for (int i = 0; i < costMatrix.Size; i++)
+            {
+                CityData.Add(new CityNodeData(i, costMatrix, Cities));
+            }
+
+            //Clustering
+            double clusterPercent = 0.1;
+            double threshold = costMatrix.DistanceRange * clusterPercent;
+            _threshold = (float)threshold;
+            List<CityNodeData> citiesSortedByNumberUnderThreshold = new List<CityNodeData>(CityData);
+            citiesSortedByNumberUnderThreshold.Sort((a, b) =>
+                (a.AverageWorstDistanceOfBelowThreshold(threshold).CompareTo(
+                b.AverageWorstDistanceOfBelowThreshold(threshold))));
+
+            foreach (CityNodeData c in citiesSortedByNumberUnderThreshold)
+            {
+                Console.WriteLine(c.AverageWorstDistanceOfBelowThreshold(threshold) + " " +
+                    c.NumberCitiesBelowWorstThreshold(threshold));
+            }
+
+            List<List<CityNodeData>> finalClusters = new List<List<CityNodeData>>();
+            List<CityNodeData> visited = new List<CityNodeData>(CityData);
+            Dictionary<CityNodeData, int> clusterAssignment = new Dictionary<CityNodeData, int>();
+            foreach (CityNodeData c in visited)
+            {
+                clusterAssignment.Add(c, -1);
+            }
+
+            while (citiesSortedByNumberUnderThreshold.Count > 0)
+            {
+                List<CityNodeData> curCluster = new List<CityNodeData>();
+                CityNodeData cur = citiesSortedByNumberUnderThreshold[0];
+                clusterAssignment[cur] = finalClusters.Count;
+
+                citiesSortedByNumberUnderThreshold.RemoveAt(0);
+                visited.Remove(cur);
+                curCluster.Add(cur);
+
+                for (int i = 0; i < cur.SortedWorstDistance.Count; i++)
+                {
+                    bool canAdd = true;
+                    CityNodeData curCloseCheck = CityData[cur.SortedWorstDistance[i].CityId];
+                    if (!visited.Contains(curCloseCheck))
+                    {
+                        continue;
+                    }
+                    foreach (CityNodeData inCluster in curCluster)
+                    {
+                        double worstDistance = costMatrix.WorstDistanceBetween(inCluster.CityId, curCloseCheck.CityId);
+                        if (worstDistance > threshold)
+                        {
+                            canAdd = false;
+                            break;
+                        }
+                    }
+
+                    if (canAdd)
+                    {
+                        curCluster.Add(curCloseCheck);
+                        visited.Remove(curCloseCheck);
+                        citiesSortedByNumberUnderThreshold.Remove(curCloseCheck);
+                    }
+                }
+
+                finalClusters.Add(curCluster);
+            }
+
+            foreach (List<CityNodeData> cluster in finalClusters)
+            {
+                Console.WriteLine(cluster.Count);
+            }
+            Console.WriteLine("SAVED: " + (costMatrix.Size - finalClusters.Count));
+            _storedClusters = finalClusters;
+
+            List<CityCluster> actualClusters = new List<CityCluster>();
+            foreach (List<CityNodeData> clust in finalClusters)
+            {
+                actualClusters.Add(new CityCluster(clust, CityData, costMatrix));
+            }
+
+            Program.MainForm.Invalidate();
+        }
+
+        private List<List<CityNodeData>> _storedClusters;
+        private float _threshold;
+        public void CustomDraw(Graphics g)
+        {
+            if (_storedClusters == null)
+            {
+                return;
+            }
+
+            Color[] clusterColors = new Color[]{Color.Red, Color.Blue, Color.Green, Color.Yellow, Color.Teal, Color.HotPink,
+                Color.Fuchsia, Color.Salmon, Color.Tomato, Color.Violet, Color.CadetBlue, Color.DarkOliveGreen, Color.Orange, 
+                Color.OrangeRed, Color.Black, Color.Black, Color.Black, Color.Black, Color.Black, Color.Black, Color.Black, 
+                Color.Black, Color.Black, Color.Black, Color.Black, Color.Black, Color.Black};
+            for (int i = 0; i < _storedClusters.Count; i++)
+            {
+                List<CityNodeData> curCluster = _storedClusters[i];
+                Color col = clusterColors[i % clusterColors.Length];
+
+                Pen p = new Pen(col);
+                float width = g.VisibleClipBounds.Width - 45F;
+                float height = g.VisibleClipBounds.Height - 45F;
+                for (int j = 0; j < curCluster.Count; j++)
+                {
+                    CityNodeData c = curCluster[j];
+                    if (j == 0)
+                    {
+                        g.FillEllipse(p.Brush, (float)c.BaseCity.X * width - CITY_ICON_SIZE, (float)c.BaseCity.Y * height - CITY_ICON_SIZE,
+                            CITY_ICON_SIZE * 2, CITY_ICON_SIZE * 2);
+                        g.DrawEllipse(p, (float)c.BaseCity.X * width - CITY_ICON_SIZE - _threshold, (float)c.BaseCity.Y * height - CITY_ICON_SIZE - _threshold,
+                            CITY_ICON_SIZE * 2 + 2 * _threshold, CITY_ICON_SIZE * 2 + 2 * _threshold);
+                    }
+                    else
+                    {
+                        g.FillEllipse(p.Brush, (float)c.BaseCity.X * width, (float)c.BaseCity.Y * height, CITY_ICON_SIZE, CITY_ICON_SIZE);
+                        /*g.DrawEllipse(p, (float)c.BaseCity.X * width - CITY_ICON_SIZE - _threshold, (float)c.BaseCity.Y * height - CITY_ICON_SIZE - _threshold,
+                            CITY_ICON_SIZE * 2 + 2 * _threshold, CITY_ICON_SIZE * 2 + 2 * _threshold);*/
+                    }
+
+                }
+            }
+
+
         }
 
         /// <summary>
