@@ -614,7 +614,8 @@ namespace TSP
         }
 
         public void DoClusters(out CostMatrix CostMatrix, out List<CityNodeData> CityData, 
-            out List<CityCluster> CityClusters, out Dictionary<int, CityCluster> CityToClusterItsIn){
+            out List<CityCluster> CityClusters, out Dictionary<int, CityCluster> CityToClusterItsIn,
+            out Dictionary<int, int> SizeClusterToNumberOfThatSize){
                 CostMatrix = new CostMatrix(Cities);
                 _costMatrix = CostMatrix;
                 Stopwatch clusterWatch = new Stopwatch();
@@ -686,6 +687,7 @@ namespace TSP
 
                 CityClusters = new List<CityCluster>();
                 CityToClusterItsIn = new Dictionary<int, CityCluster>();
+                SizeClusterToNumberOfThatSize = new Dictionary<int, int>();
                 foreach (List<CityNodeData> clust in finalClusters)
                 {
                     CityCluster actualCluster = new CityCluster(clust, CityData, CostMatrix);
@@ -694,10 +696,16 @@ namespace TSP
                     {
                         CityToClusterItsIn.Add(city, actualCluster);
                     }
+                    if (!SizeClusterToNumberOfThatSize.ContainsKey(clust.Count))
+                    {
+                        SizeClusterToNumberOfThatSize.Add(clust.Count, 0);
+                    }
+                    SizeClusterToNumberOfThatSize[clust.Count] = 
+                        SizeClusterToNumberOfThatSize[clust.Count] + 1;
                 }
         }
 
-        public void SolveExternalClusters(CostMatrix costMatrix, List<CityNodeData> CityData,
+        public double SolveExternalClusters(CostMatrix costMatrix, List<CityNodeData> CityData,
             List<CityCluster> cityClusters, Dictionary<int, CityCluster> cityToClusterItsIn,
             out List<int> interNodeEdges)
         {
@@ -742,6 +750,13 @@ namespace TSP
             int lastEdge = CityCluster.ShortedValidEdgeBetweenClusters(end, start);
             interNodeEdges.Add(lastEdge);
             _interNodeEdges = interNodeEdges;
+
+            double retVal = 0;
+            foreach (int edge in interNodeEdges)
+            {
+                retVal += costMatrix.CostAtEdgeId(edge);
+            }
+            return retVal;
         }
 
         private TSPSolution Solve(CostMatrix costMatrix, List<CityNodeData> CityData,
@@ -792,13 +807,20 @@ namespace TSP
             List<CityCluster> cityClusters;
             Dictionary<int, CityCluster> cityToClusterItsIn;
             List<int> interNodeEdges;
-
-            DoClusters(out costMatrix, out cityData, out cityClusters, out cityToClusterItsIn);
-            SolveExternalClusters(costMatrix, cityData, cityClusters, cityToClusterItsIn, out interNodeEdges);
+            Dictionary<int, int> sizeClusterToNumOfThatSize;
+            DoClusters(out costMatrix, out cityData, out cityClusters, out cityToClusterItsIn,
+                out sizeClusterToNumOfThatSize);
+            double solutionLength = 
+                SolveExternalClusters(costMatrix, cityData, cityClusters, cityToClusterItsIn, out interNodeEdges);
             TSPSolution sol = Solve(costMatrix, cityData, cityClusters, cityToClusterItsIn, interNodeEdges);
 
             bssf = sol;
             sw.Stop();
+            foreach (int size in sizeClusterToNumOfThatSize.Keys)
+            {
+                Console.WriteLine("There are {0} clusters of size {1}", sizeClusterToNumOfThatSize[size], size);
+            }
+            Console.WriteLine("Solution length is {0}", solutionLength);
             
 
             if (UpdateForm)
@@ -809,7 +831,7 @@ namespace TSP
             }
             
         }
-
+        public static int TimeOut = 600;
         private List<List<CityNodeData>> _storedClusters;
         private List<CityNodeData> _cityNodes;
         public static float _clusterPercent = 0.1f;
@@ -992,7 +1014,7 @@ namespace TSP
                     }
                 }
 
-                if (timer.Elapsed.TotalSeconds >= 30)
+                if (timer.Elapsed.TotalSeconds >= ProblemAndSolver.TimeOut)
                 {
                     timer.Stop();
                     if (UpdateForm)

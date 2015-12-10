@@ -223,7 +223,13 @@ namespace TSP
             List<CityNodeData> cityNodeData;
             List<CityCluster> cityClusters;
             Dictionary<int, CityCluster> cityToClusterItsIn;
-            CityData.DoClusters(out costMatrix, out cityNodeData, out cityClusters, out cityToClusterItsIn);
+            Dictionary<int, int> sizeClusterToNumOfSize;
+            CityData.DoClusters(out costMatrix, out cityNodeData, out cityClusters, out cityToClusterItsIn,
+                out sizeClusterToNumOfSize);
+            foreach (int size in sizeClusterToNumOfSize.Keys)
+            {
+                Console.WriteLine("There are {0} clusters of size {1}", sizeClusterToNumOfSize[size], size);
+            }
             Invalidate();
         }
 
@@ -233,12 +239,23 @@ namespace TSP
             List<CityNodeData> cityNodeData;
             List<CityCluster> cityClusters;
             Dictionary<int, CityCluster> cityToClusterItsIn;
+            Dictionary<int, int> sizeClusterToNumOfSize;
             List<int> interNodeEdges;
-            CityData.DoClusters(out costMatrix, out cityNodeData, out cityClusters, out cityToClusterItsIn);
-            CityData.SolveExternalClusters(costMatrix, cityNodeData, cityClusters, cityToClusterItsIn,
+            CityData.DoClusters(out costMatrix, out cityNodeData, out cityClusters, out cityToClusterItsIn,
+                out sizeClusterToNumOfSize);
+            double solutionLength = 
+                CityData.SolveExternalClusters(costMatrix, cityNodeData, cityClusters, cityToClusterItsIn,
                 out interNodeEdges);
+
+            foreach (int size in sizeClusterToNumOfSize.Keys)
+            {
+                Console.WriteLine("There are {0} clusters of size {1}", sizeClusterToNumOfSize[size], size);
+            }
+            Console.WriteLine("Solution length is {0}", solutionLength);
             Invalidate();
         }
+        
+        
 
     }
 }
