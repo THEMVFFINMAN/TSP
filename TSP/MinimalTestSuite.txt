@@ -1,3 +1,29 @@
 ﻿30
-15 5 ALL Hard True
-30 5 ALL Hard True
+15 20 pickRandomSolution Hard True
+15 20 pickGreedySolution Hard True
+15 20 PointClusterSolution Hard True
+
+30 20 pickRandomSolution Hard True
+30 20 pickGreedySolution Hard True
+30 20 PointClusterSolution Hard True
+
+60 20 pickRandomSolution Hard True
+60 20 pickGreedySolution Hard True
+60 20 PointClusterSolution Hard True
+
+100 20 pickRandomSolution Hard True
+100 20 pickGreedySolution Hard True
+100 20 PointClusterSolution Hard True
+
+200 20 pickRandomSolution Hard True
+200 20 pickGreedySolution Hard True
+200 20 PointClusterSolution Hard True
+
+400 20 pickRandomSolution Hard True
+400 20 pickGreedySolution Hard True
+400 20 PointClusterSolution Hard True
+
+15 2 solveProblem Hard True
+30 2 solveProblem Hard True
+60 2 solveProblem Hard True
+100 2 solveProblem Hard True
