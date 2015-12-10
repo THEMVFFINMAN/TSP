@@ -612,94 +612,95 @@ namespace TSP
                 return (partialRoute)formatter.Deserialize(ms);
             }
         }
-        
-        [TestSuiteSolver.AlgorithmImplementation]
-        public void PointClusterSolution()
-        {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-            CostMatrix costMatrix = new CostMatrix(Cities);
-            _costMatrix = costMatrix;
-            Stopwatch clusterWatch = new Stopwatch();
-            clusterWatch.Start();
-            List<CityNodeData> CityData = new List<CityNodeData>();
-            _cityNodes = CityData;
-            for (int i = 0; i < costMatrix.Size; i++)
-            {
-                CityData.Add(new CityNodeData(i, costMatrix, Cities));
-            }
 
-            //Clustering
-            double threshold = costMatrix.DistanceRange * _clusterPercent;
-            _threshold = (float)threshold;
-            List<CityNodeData> citiesSortedByNumberUnderThreshold = new List<CityNodeData>(CityData);
-            citiesSortedByNumberUnderThreshold.Sort((a, b) =>
-                (a.AverageWorstDistanceOfBelowThreshold(threshold).CompareTo(
-                b.AverageWorstDistanceOfBelowThreshold(threshold))));
-
-            List<List<CityNodeData>> finalClusters = new List<List<CityNodeData>>();
-            List<CityNodeData> visited = new List<CityNodeData>(CityData);
-            Dictionary<CityNodeData, int> clusterAssignment = new Dictionary<CityNodeData, int>();
-            foreach (CityNodeData c in visited)
-            {
-                clusterAssignment.Add(c, -1);
-            }
-
-            while (citiesSortedByNumberUnderThreshold.Count > 0)
-            {
-                List<CityNodeData> curCluster = new List<CityNodeData>();
-                CityNodeData cur = citiesSortedByNumberUnderThreshold[0];
-                clusterAssignment[cur] = finalClusters.Count;
-
-                citiesSortedByNumberUnderThreshold.RemoveAt(0);
-                visited.Remove(cur);
-                curCluster.Add(cur);
-
-                for (int i = 0; i < cur.SortedWorstDistance.Count; i++)
+        public void DoClusters(out CostMatrix CostMatrix, out List<CityNodeData> CityData, 
+            out List<CityCluster> CityClusters, out Dictionary<int, CityCluster> CityToClusterItsIn){
+                CostMatrix = new CostMatrix(Cities);
+                _costMatrix = CostMatrix;
+                Stopwatch clusterWatch = new Stopwatch();
+                clusterWatch.Start();
+                CityData = new List<CityNodeData>();
+                _cityNodes = CityData;
+                for (int i = 0; i < CostMatrix.Size; i++)
                 {
-                    bool canAdd = true;
-                    CityNodeData curCloseCheck = CityData[cur.SortedWorstDistance[i].CityId];
-                    if (!visited.Contains(curCloseCheck))
+                    CityData.Add(new CityNodeData(i, CostMatrix, Cities));
+                }
+
+                //Clustering
+                double threshold = CostMatrix.DistanceRange * _clusterPercent;
+                _threshold = (float)threshold;
+                List<CityNodeData> citiesSortedByNumberUnderThreshold = new List<CityNodeData>(CityData);
+                citiesSortedByNumberUnderThreshold.Sort((a, b) =>
+                    (a.AverageWorstDistanceOfBelowThreshold(threshold).CompareTo(
+                    b.AverageWorstDistanceOfBelowThreshold(threshold))));
+
+                List<List<CityNodeData>> finalClusters = new List<List<CityNodeData>>();
+                List<CityNodeData> visited = new List<CityNodeData>(CityData);
+                Dictionary<CityNodeData, int> clusterAssignment = new Dictionary<CityNodeData, int>();
+                foreach (CityNodeData c in visited)
+                {
+                    clusterAssignment.Add(c, -1);
+                }
+
+                while (citiesSortedByNumberUnderThreshold.Count > 0)
+                {
+                    List<CityNodeData> curCluster = new List<CityNodeData>();
+                    CityNodeData cur = citiesSortedByNumberUnderThreshold[0];
+                    clusterAssignment[cur] = finalClusters.Count;
+
+                    citiesSortedByNumberUnderThreshold.RemoveAt(0);
+                    visited.Remove(cur);
+                    curCluster.Add(cur);
+
+                    for (int i = 0; i < cur.SortedWorstDistance.Count; i++)
                     {
-                        continue;
-                    }
-                    foreach (CityNodeData inCluster in curCluster)
-                    {
-                        double worstDistance = costMatrix.WorstDistanceBetween(inCluster.CityId, curCloseCheck.CityId);
-                        if (worstDistance > threshold)
+                        bool canAdd = true;
+                        CityNodeData curCloseCheck = CityData[cur.SortedWorstDistance[i].CityId];
+                        if (!visited.Contains(curCloseCheck))
                         {
-                            canAdd = false;
-                            break;
+                            continue;
+                        }
+                        foreach (CityNodeData inCluster in curCluster)
+                        {
+                            double worstDistance = CostMatrix.WorstDistanceBetween(inCluster.CityId, curCloseCheck.CityId);
+                            if (worstDistance > threshold)
+                            {
+                                canAdd = false;
+                                break;
+                            }
+                        }
+
+                        if (canAdd)
+                        {
+                            curCluster.Add(curCloseCheck);
+                            visited.Remove(curCloseCheck);
+                            citiesSortedByNumberUnderThreshold.Remove(curCloseCheck);
                         }
                     }
 
-                    if (canAdd)
+                    finalClusters.Add(curCluster);
+                }
+                clusterWatch.Stop();
+                Console.WriteLine("SAVED: " + (CostMatrix.Size - finalClusters.Count));
+                _storedClusters = finalClusters;
+
+                CityClusters = new List<CityCluster>();
+                CityToClusterItsIn = new Dictionary<int, CityCluster>();
+                foreach (List<CityNodeData> clust in finalClusters)
+                {
+                    CityCluster actualCluster = new CityCluster(clust, CityData, CostMatrix);
+                    CityClusters.Add(actualCluster);
+                    foreach (int city in actualCluster.ContainedCityIds)
                     {
-                        curCluster.Add(curCloseCheck);
-                        visited.Remove(curCloseCheck);
-                        citiesSortedByNumberUnderThreshold.Remove(curCloseCheck);
+                        CityToClusterItsIn.Add(city, actualCluster);
                     }
                 }
+        }
 
-                finalClusters.Add(curCluster);
-            }
-            clusterWatch.Stop();
-            Console.WriteLine("SAVED: " + (costMatrix.Size - finalClusters.Count));
-            _storedClusters = finalClusters;
-
-            List<CityCluster> actualClusters = new List<CityCluster>();
-            Dictionary<int, CityCluster> cityToClusterItsIn = new Dictionary<int, CityCluster>();
-            foreach (List<CityNodeData> clust in finalClusters)
-            {
-                CityCluster actualCluster = new CityCluster(clust, CityData, costMatrix);
-                actualClusters.Add(actualCluster);
-                foreach (int city in actualCluster.ContainedCityIds)
-                {
-                    cityToClusterItsIn.Add(city, actualCluster);
-                }
-            }
-
-            
+        public void SolveExternalClusters(CostMatrix costMatrix, List<CityNodeData> CityData,
+            List<CityCluster> cityClusters, Dictionary<int, CityCluster> cityToClusterItsIn,
+            out List<int> interNodeEdges)
+        {
             int startingEdge = -1;
             foreach (int i in costMatrix.AllEdgesSortedByDistance)
             {
@@ -714,7 +715,7 @@ namespace TSP
             CityCluster curFromCluster = cityToClusterItsIn[curCoords.Key];
             List<int> visitedCities = new List<int>();
             List<CityCluster> clustersVisitedInOrder = new List<CityCluster>();
-            List<int> interNodeEdges = new List<int>();
+            interNodeEdges = new List<int>();
 
             clustersVisitedInOrder.Add(cityToClusterItsIn[curCoords.Key]);
             visitedCities.AddRange(cityToClusterItsIn[curCoords.Key].ContainedCityIds);
@@ -722,11 +723,11 @@ namespace TSP
             cityToClusterItsIn[curCoords.Key].OutgoingOnEdge(startingEdge);
             interNodeEdges.Add(startingEdge);
 
-            while (interNodeEdges.Count < actualClusters.Count - 1)
+            while (interNodeEdges.Count < cityClusters.Count - 1)
             {
                 curFromCluster = cityToClusterItsIn[curCoords.Value];
                 int newEdgeId = curFromCluster.GetShortestValidOutgoingEdgeIgnoringCities(visitedCities);
-                
+
                 curCoords = costMatrix.EdgeCoords(newEdgeId);
                 cityToClusterItsIn[curCoords.Value].IncomingFromEdge(newEdgeId);
                 cityToClusterItsIn[curCoords.Value].OutgoingOnEdge(newEdgeId);
@@ -740,7 +741,13 @@ namespace TSP
             CityCluster start = clustersVisitedInOrder[0];
             int lastEdge = CityCluster.ShortedValidEdgeBetweenClusters(end, start);
             interNodeEdges.Add(lastEdge);
+            _interNodeEdges = interNodeEdges;
+        }
 
+        private TSPSolution Solve(CostMatrix costMatrix, List<CityNodeData> CityData,
+            List<CityCluster> cityClusters, Dictionary<int, CityCluster> cityToClusterItsIn,
+            List<int> interNodeEdges)
+        {
             List<int> allEdges = new List<int>();
             ArrayList sol = new ArrayList();
 
@@ -771,11 +778,28 @@ namespace TSP
                 }
 
             }
+            return new TSPSolution(sol);
+        }
+        
+        [TestSuiteSolver.AlgorithmImplementation]
+        public void PointClusterSolution()
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
 
-            bssf = new TSPSolution(sol);
+            CostMatrix costMatrix;
+            List<CityNodeData> cityData;
+            List<CityCluster> cityClusters;
+            Dictionary<int, CityCluster> cityToClusterItsIn;
+            List<int> interNodeEdges;
+
+            DoClusters(out costMatrix, out cityData, out cityClusters, out cityToClusterItsIn);
+            SolveExternalClusters(costMatrix, cityData, cityClusters, cityToClusterItsIn, out interNodeEdges);
+            TSPSolution sol = Solve(costMatrix, cityData, cityClusters, cityToClusterItsIn, interNodeEdges);
+
+            bssf = sol;
             sw.Stop();
-            _interNodeEdges = interNodeEdges;
-            _interNodeEdges = null;
+            
 
             if (UpdateForm)
             {

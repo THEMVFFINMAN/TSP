@@ -180,6 +180,7 @@ namespace TSP
         {
             this.reset();
             //CityData.specialSolution();
+            ProblemAndSolver._clusterPercent = (float)numericUpDown1.Value;
             CityData.PointClusterSolution();
         }
 
@@ -214,5 +215,30 @@ namespace TSP
             float.TryParse(((TextBox)sender).Text, out result);
             ProblemAndSolver._clusterPercent = result;
         }
+
+        private void doCluster_Click(object sender, EventArgs e)
+        {
+            ProblemAndSolver._clusterPercent = (float)numericUpDown1.Value;
+            CostMatrix costMatrix;
+            List<CityNodeData> cityNodeData;
+            List<CityCluster> cityClusters;
+            Dictionary<int, CityCluster> cityToClusterItsIn;
+            CityData.DoClusters(out costMatrix, out cityNodeData, out cityClusters, out cityToClusterItsIn);
+            Invalidate();
+        }
+
+        private void doClusterSolve_Click(object sender, EventArgs e)
+        {
+            CostMatrix costMatrix;
+            List<CityNodeData> cityNodeData;
+            List<CityCluster> cityClusters;
+            Dictionary<int, CityCluster> cityToClusterItsIn;
+            List<int> interNodeEdges;
+            CityData.DoClusters(out costMatrix, out cityNodeData, out cityClusters, out cityToClusterItsIn);
+            CityData.SolveExternalClusters(costMatrix, cityNodeData, cityClusters, cityToClusterItsIn,
+                out interNodeEdges);
+            Invalidate();
+        }
+
     }
 }
