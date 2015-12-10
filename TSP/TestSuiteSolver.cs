@@ -108,7 +108,7 @@ namespace TSP
             string header = String.Format(",{0}", RANDOM_NAME);
             foreach (String s in methodOrder)
             {
-                if (!s.Equals(RANDOM_NAME))
+                if (!s.Equals(RANDOM_NAME) && results.IsUsedMethod(s))
                 {
                     header += ("," + s + ",,");
                 }
@@ -119,7 +119,11 @@ namespace TSP
             for (int i = 1; i < methodOrder.Count; i++)
             {
                 string curMethod = methodOrder[i];
-                secondHeader.Append(",Time (sec),Path Length,% Improvement");
+                if (results.IsUsedMethod(curMethod))
+                {
+                    secondHeader.Append(",Time (sec),Path Length,% Improvement");
+                }
+
             }
 
             StringBuilder bodyFill = new StringBuilder();
@@ -131,10 +135,16 @@ namespace TSP
                 bodyFill.Append(numCities + "," + randomDistance);
                 foreach (string curMethod in methodOrder)
                 {
-                    SingleTestResult result = results.GetValues(numCities, curMethod)[0];
-                    double increase = result.Distance - randomDistance;
-                    double percentChange = (increase % randomDistance) * 100;
-                    bodyFill.Append("," + result.TimeInSeconds + "," + result.Distance + "," + percentChange);
+                    List<SingleTestResult> resultsForCitiesAndMethods = 
+                        results.GetValues(numCities, curMethod);
+                    if (resultsForCitiesAndMethods.Count > 0 && !curMethod.Equals(RANDOM_NAME))
+                    {
+                        SingleTestResult result = resultsForCitiesAndMethods[0];
+                        double increase = result.Distance - randomDistance;
+                        double percentChange = (increase / randomDistance) * -100;
+                        bodyFill.Append("," + result.TimeInSeconds + "," + result.Distance + "," + percentChange);
+                    }
+                    
                 }
                 bodyFill.AppendLine();
             }
@@ -436,10 +446,17 @@ namespace TSP
         public class TotalTestResults
         {
             private Dictionary<int, Dictionary<string, List<SingleTestResult>>> _cityToFunctionToResults;
-
+            private HashSet<string> _usedMethods;
             public TotalTestResults()
             {
-                _cityToFunctionToResults = new Dictionary<int, Dictionary<string, List<SingleTestResult>>>();
+                _cityToFunctionToResults = 
+                    new Dictionary<int, Dictionary<string, List<SingleTestResult>>>();
+                _usedMethods = new HashSet<string>();
+            }
+
+            public bool IsUsedMethod(string methodName)
+            {
+                return _usedMethods.Contains(methodName);
             }
 
             public List<int> SortedNumberCities()
@@ -461,6 +478,7 @@ namespace TSP
                     functionToResults.Add(methodName, new List<SingleTestResult>());
                 }
                 functionToResults[methodName].Add(result);
+                _usedMethods.Add(methodName);
             }
 
             public bool HasValues(int numCities, string methodName)
